@@ -1,8 +1,10 @@
 package minegroup.example.CEP_api;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class EnderecoController {
@@ -29,11 +31,25 @@ public class EnderecoController {
             String url = VIA_CEP_URL.replace("{cep}", cep);
 
             try {
-                ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+                // Fazendo a requisição e mapeando o retorno diretamente para o objeto Endereco
+                ResponseEntity<Endereco> response = restTemplate.getForEntity(url, Endereco.class);
+
                 if (response.getStatusCode().is2xxSuccessful()) {
-                    System.out.println("Endereço encontrado: " + response.getBody());
+                    Endereco endereco = response.getBody();
+                    if (endereco != null && endereco.getErro() == null) {
+                        System.out.println("Endereço encontrado:");
+                        System.out.println("Logradouro: " + endereco.getLogradouro());
+                        System.out.println("Bairro: " + endereco.getBairro());
+                        System.out.println("Cidade: " + endereco.getLocalidade());
+                        System.out.println("Estado: "+endereco.getEstado());
+                        System.out.println("Região: "+endereco.getRegiao());
+                        System.out.println("DDD: "+endereco.getDdd());
+                        System.out.println("UF: " + endereco.getUf());
+                    } else {
+                        System.out.println("Erro: Endereço não encontrado para o CEP informado.");
+                    }
                 } else {
-                    System.out.println("Erro: Endereço não encontrado para o CEP informado.");
+                    System.out.println("Erro ao buscar o endereço.");
                 }
             } catch (Exception e) {
                 System.out.println("Erro ao chamar a API: " + e.getMessage());

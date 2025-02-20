@@ -6,6 +6,10 @@ public class Endereco {
     private String bairro;
     private String localidade;
     private String uf;
+    private int ddd;
+    private String estado;
+    private String regiao;
+
     private Boolean erro;
 
     // Getters e Setters
@@ -55,5 +59,30 @@ public class Endereco {
 
     public void setErro(Boolean erro) {
         this.erro = erro;
+    }
+
+
+
+    public String getEstado() {
+        return estado;
+    }
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public int getDdd() {
+        return ddd;
+    }
+
+    public void setDdd(int ddd) {
+        this.ddd = ddd;
+    }
+
+
+    public String getRegiao() {
+        return regiao;
+    }
+    public void setRegiao(String regiao) {
+        this.regiao = regiao;
     }
 }
